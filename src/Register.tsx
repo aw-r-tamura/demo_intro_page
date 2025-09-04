@@ -10,14 +10,36 @@ function Register() {
     city: '',
     birthdate: '',
   })
+  const [errors, setErrors] = useState({ password: '', confirmPassword: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    if (name === 'password' || name === 'confirmPassword') {
+      setErrors((prev) => ({ ...prev, [name]: '' }))
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+    if (!pattern.test(formData.password)) {
+      setErrors({ password: 'パスワードは英数字を含む8文字以上にしてください', confirmPassword: '' })
+      return
+    }
+    const birthDigits = formData.birthdate.replace(/-/g, '')
+    if (
+      formData.birthdate &&
+      (formData.password.includes(formData.birthdate) ||
+        formData.password.includes(birthDigits))
+    ) {
+      setErrors({ password: 'パスワードに生年月日を含めないでください', confirmPassword: '' })
+      return
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setErrors({ password: '', confirmPassword: 'パスワードが一致しません' })
+      return
+    }
     // For now just log the data.
     console.log('Registering user', formData)
   }
@@ -130,6 +152,9 @@ function Register() {
           <label htmlFor="password" className="active">
             パスワード
           </label>
+          {errors.password && (
+            <span style={{ color: 'red' }}>{errors.password}</span>
+          )}
         </div>
         <div className="input-field">
           <input
@@ -143,6 +168,9 @@ function Register() {
           <label htmlFor="confirmPassword" className="active">
             パスワード（確認）
           </label>
+          {errors.confirmPassword && (
+            <span style={{ color: 'red' }}>{errors.confirmPassword}</span>
+          )}
         </div>
         <button type="submit" className="btn">
           登録
