@@ -7,6 +7,8 @@ function Register() {
     email: '',
     password: '',
     confirmPassword: '',
+    postalCode: '',
+    city: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +20,27 @@ function Register() {
     e.preventDefault()
     // For now just log the data.
     console.log('Registering user', formData)
+  }
+
+  const handleZipSearch = async () => {
+    if (!formData.postalCode) return
+    try {
+      const res = await fetch(
+        `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${formData.postalCode}`,
+      )
+      const data = await res.json()
+      if (data.results?.length) {
+        const r = data.results[0]
+        setFormData((prev) => ({
+          ...prev,
+          city: `${r.address2}${r.address3}`,
+        }))
+      } else {
+        alert('市町村が見つかりません')
+      }
+    } catch (err) {
+      console.error('住所取得に失敗しました', err)
+    }
   }
 
   return (
@@ -40,6 +63,30 @@ function Register() {
             type="email"
             name="email"
             value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label>
+          郵便番号
+          <div className="zip-container">
+            <input
+              type="text"
+              name="postalCode"
+              value={formData.postalCode}
+              onChange={handleChange}
+            />
+            <button type="button" onClick={handleZipSearch}>
+              住所検索
+            </button>
+          </div>
+        </label>
+        <label>
+          市町村
+          <input
+            type="text"
+            name="city"
+            value={formData.city}
             onChange={handleChange}
             required
           />
