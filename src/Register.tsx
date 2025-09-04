@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './Register.css'
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -9,6 +8,7 @@ function Register() {
     confirmPassword: '',
     postalCode: '',
     city: '',
+    birthdate: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,74 +44,109 @@ function Register() {
   }
 
   return (
-    <div className="register-container">
-      <h2>新規登録</h2>
-      <form className="register-form" onSubmit={handleSubmit}>
-        <label>
-          ユーザー名
+    <div className="container">
+      <h2 className="center-align">新規登録</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="input-field">
           <input
+            id="username"
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          メールアドレス
+          <label htmlFor="username" className="active">
+            ユーザー名
+          </label>
+        </div>
+        <div className="input-field">
           <input
+            id="email"
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          郵便番号
-          <div className="zip-container">
+          <label htmlFor="email" className="active">
+            メールアドレス
+          </label>
+        </div>
+        <div className="row">
+          <div className="input-field col s8">
             <input
+              id="postalCode"
               type="text"
               name="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
             />
-            <button type="button" onClick={handleZipSearch}>
+            <label htmlFor="postalCode" className="active">
+              郵便番号
+            </label>
+          </div>
+          <div className="col s4" style={{ marginTop: '1rem' }}>
+            <button type="button" className="btn" onClick={handleZipSearch}>
               住所検索
             </button>
           </div>
-        </label>
-        <label>
-          市町村
+        </div>
+        <div className="input-field">
           <input
+            id="city"
             type="text"
             name="city"
             value={formData.city}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          パスワード
+          <label htmlFor="city" className="active">
+            市町村
+          </label>
+        </div>
+        <div className="input-field">
           <input
+            id="birthdate"
+            type="date"
+            name="birthdate"
+            value={formData.birthdate}
+            onChange={handleChange}
+            required
+          />
+          <label htmlFor="birthdate" className="active">
+            生年月日
+          </label>
+        </div>
+        <div className="input-field">
+          <input
+            id="password"
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          パスワード（確認）
+          <label htmlFor="password" className="active">
+            パスワード
+          </label>
+        </div>
+        <div className="input-field">
           <input
+            id="confirmPassword"
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             required
           />
-        </label>
-        <button type="submit">登録</button>
+          <label htmlFor="confirmPassword" className="active">
+            パスワード（確認）
+          </label>
+        </div>
+        <button type="submit" className="btn">
+          登録
+        </button>
       </form>
     </div>
   )
