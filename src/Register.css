@@ -23,6 +23,15 @@
   margin-top: 0.25rem;
 }
 
+.zip-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.zip-container input {
+  flex: 1;
+}
+
 .register-form button {
   padding: 0.75rem;
   font-size: 1rem;
